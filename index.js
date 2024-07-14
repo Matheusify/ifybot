@@ -22,6 +22,8 @@ const db = new Enmap({
 });
 db.ensure("totalmessages", 0);
 db.ensure("totalcharacters", 0);
+db.ensure("1totalmessages", 0);
+db.ensure("1totalcharacters", 0);
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.username}.`);
