@@ -89,6 +89,30 @@ client.on("messageCreate", (message) => {
     db.math("totalcharacters", "+", yablength);
   }
 
+    db.ensure(message.author.id, {
+      amessages: 0,
+      acharacters: 0,
+      axp: 0,
+      alevel: 0
+    });
+
+    const ayablength = message.content.length;
+    const axpGain = Math.floor(Math.random() * 10) + 15; // Random XP between 15-24
+
+    console.log(db.get(message.author.id).acharacters)
+    db.math("1totalmessages", "+", 1);
+    db.math(message.author.id, "+", 1, "amessages")
+    db.math(message.author.id, "+", ayablength, "acharacters");
+    db.math(message.author.id, "+", axpgain, "axp");
+    console.log(db.get(message.author.id))
+    db.set(message.author.id, aconvertToLevels(xp), "alevel")
+    if (newLevel > currentLevel) {
+      db.set(message.author.id, newLevel, "level");
+      message.channel.send(`<@${message.author.id}> has reached level ${newLevel}!`);
+    }
+    db.math("1totalcharacters", "+", ayablength);
+  }
+
   if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!stats")) {
     var subcount;
     var cid;
@@ -246,6 +270,14 @@ client.on("messageCreate", (message) => {
     var usercharacters = db.get(message.author.id).characters;
     message.reply(`You have ${userxp} XP and are on level ${userlevel}! You also have ${usermessages} messages and ${usercharacters} characters sent.`);
   }
+    if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
+    var auserxp = db.get(message.author.id).xp
+    var auserlevel = db.get(message.author.id).level
+    var ausermessages = db.get(message.author.id).messages
+    var ausercharacters = db.get(message.author.id).characters
+    message.reply(`You have ${auserxp} XP and are on level ${auserlevel}! You also do have ${ausermessages} messages and ${ausercharacters} characters sent.`)
+  }
+
 });
 
 client.login(config.token);
