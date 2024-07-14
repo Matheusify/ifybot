@@ -22,8 +22,6 @@ const db = new Enmap({
 });
 db.ensure("totalmessages", 0);
 db.ensure("totalcharacters", 0);
-db.ensure("1totalmessages", 0);
-db.ensure("1totalcharacters", 0);
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.username}.`);
@@ -31,7 +29,7 @@ client.on("ready", () => {
 
 client.on("messageCreate", (message) => {
   function numberWithCommas(x) {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    return x.toLocaleString();
   }
 
   function abbreviate(count, withAbbr = true, decimals = 2) {
@@ -85,13 +83,11 @@ client.on("messageCreate", (message) => {
 
     if (newLevel > currentLevel) {
       db.set(message.author.id, newLevel, "level");
-      message.channel.send(`<@${message.author.id}> has reached level ${newLevel}!`);
+      message.channel.send(`<@${message.author.id}> has reached level ${newLevel.toLocaleString()}!`);
     }
 
     db.math("totalcharacters", "+", yablength);
   }
-
-  if (message.channel.id === config.groupI3d) {
 
     db.ensure(message.author.id, {
       amessages: 0,
@@ -103,19 +99,23 @@ client.on("messageCreate", (message) => {
     const ayablength = message.content.length;
     const axpGain = Math.floor(Math.random() * 10) + 15; // Random XP between 15-24
 
-    console.log(db.get(message.author.id).acharacters)
     db.math("1totalmessages", "+", 1);
-    db.math(message.author.id, "+", 1, "amessages")
+    db.math(message.author.id, "+", 1, "amessages");
     db.math(message.author.id, "+", ayablength, "acharacters");
     db.math(message.author.id, "+", axpGain, "axp");
-    console.log(db.get(message.author.id))
-    db.set(message.author.id, aconvertToLevels(xp), "alevel")
-    if (newLevel > currentLevel) {
-      db.set(message.author.id, newLevel, "level");
-      message.channel.send(`<@${message.author.id}> has reached level ${newLevel}!`);
+
+    const aCurrentXP = db.get(message.author.id).axp;
+    const aCurrentLevel = db.get(message.author.id).alevel;
+    const aNewLevel = convertToLevels(aCurrentXP);
+
+    if (aNewLevel > aCurrentLevel) {
+      db.set(message.author.id, aNewLevel, "alevel");
+      message.channel.send(`<@${message.author.id}> has reached level ${aNewLevel.toLocaleString()}!`);
     }
+
     db.math("1totalcharacters", "+", ayablength);
   }
+
   if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!stats")) {
     var subcount;
     var cid;
@@ -271,16 +271,16 @@ client.on("messageCreate", (message) => {
     var userlevel = db.get(message.author.id).level;
     var usermessages = db.get(message.author.id).messages;
     var usercharacters = db.get(message.author.id).characters;
-    message.reply(`You have ${userxp} XP and are on level ${userlevel}! You also have ${usermessages} messages and ${usercharacters} characters sent.`);
-  }
-    if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
-    var auserxp = db.get(message.author.id).xp
-    var auserlevel = db.get(message.author.id).level
-    var ausermessages = db.get(message.author.id).messages
-    var ausercharacters = db.get(message.author.id).characters
-    message.reply(`You have ${auserxp} XP and are on level ${auserlevel}! You also do have ${ausermessages} messages and ${ausercharacters} characters sent.`)
+    message.reply(`You have ${userxp.toLocaleString()} XP and are on level ${userlevel.toLocaleString()}! You also have ${usermessages.toLocaleString()} messages and ${usercharacters.toLocaleString()} characters sent.`);
   }
 
+  if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
+    var auserxp = db.get(message.author.id).axp;
+    var auserlevel = db.get(message.author.id).alevel;
+    var ausermessages = db.get(message.author.id).amessages;
+    var ausercharacters = db.get(message.author.id).acharacters;
+    message.reply(`You have ${auserxp.toLocaleString()} XP and are on level ${auserlevel.toLocaleString()}! You also have ${ausermessages.toLocaleString()} messages and ${ausercharacters.toLocaleString()} characters sent.`);
+  }
 });
 
 client.login(config.token);
