@@ -282,7 +282,7 @@ client.on("messageCreate", (message) => {
   if (message.channelId === config.groupId && message.content.toLocaleLowerCase().startsWith("ify!total")) {
     var messages = db.get("totalmessages");
     var characters = db.get("totalcharacters");
-    message.reply(`I10 have ${messages.toLocaleString('en-US')} messages and ${characters.toLocaleString()} characters sent in total.`);
+    message.reply(`I10 have ${messages.toLocaleString('en-US')} messages and ${characters.toLocaleString('en-US')} characters sent in total.`);
   }
 
   if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
