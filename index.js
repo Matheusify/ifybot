@@ -107,7 +107,7 @@ client.on("messageCreate", (message) => {
     db.math("1totalmessages", "+", 1);
     db.math(message.author.id, "+", 1, "amessages")
     db.math(message.author.id, "+", ayablength, "acharacters");
-    db.math(message.author.id, "+", axpgain, "axp");
+    db.math(message.author.id, "+", axpGain, "axp");
     console.log(db.get(message.author.id))
     db.set(message.author.id, aconvertToLevels(xp), "alevel")
     if (newLevel > currentLevel) {
