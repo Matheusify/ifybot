@@ -20,8 +20,10 @@ const db = new Enmap({
   name: "db",
   dataDir: "./db",
 });
-db.ensure("totalmessages", 0);
-db.ensure("totalcharacters", 0);
+db.ensure("totalmessages", 130511);
+db.ensure("totalcharacters", 72319);
+db.ensure("1totalmessages", 110110);
+db.ensure("1totalcharacters", 0);
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.username}.`);
@@ -69,6 +71,7 @@ client.on("messageCreate", (message) => {
       level: 0
     });
 
+
     const yablength = message.content.length;
     const xpGain = Math.floor(Math.random() * 10) + 15; // Random XP between 15-24
 
@@ -101,7 +104,7 @@ client.on("messageCreate", (message) => {
     const ayablength = message.content.length;
     const axpGain = Math.floor(Math.random() * 10) + 15; // Random XP between 15-24
 
-    db.math("1totalmessages", "+", 1);
+    db.math("1totalmessages", "+", 110110);
     db.math(message.author.id, "+", 1, "amessages");
     db.math(message.author.id, "+", ayablength, "acharacters");
     db.math(message.author.id, "+", axpGain, "axp");
@@ -276,6 +279,12 @@ client.on("messageCreate", (message) => {
     message.reply(`You have ${userxp.toLocaleString()} XP and are on level ${userlevel.toLocaleString()}! You also have ${usermessages.toLocaleString()} messages and ${usercharacters.toLocaleString()} characters sent.`);
   }
 
+  if (message.channelId === config.groupId && message.content.toLocaleLowerCase().startsWith("ify!total")) {
+    var messages = db.get(message.author.id).messages;
+    var characters = db.get(message.author.id).characters;
+    message.reply(`I10 have ${messages.toLocaleString()} messages and ${characters.toLocaleString()} characters sent in total.`);
+  }
+
   if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
     var auserxp = db.get(message.author.id).axp;
     var auserlevel = db.get(message.author.id).alevel;
@@ -283,6 +292,13 @@ client.on("messageCreate", (message) => {
     var ausercharacters = db.get(message.author.id).acharacters;
     message.reply(`You have ${auserxp.toLocaleString()} XP and are on level ${auserlevel.toLocaleString()}! You also have ${ausermessages.toLocaleString()} messages and ${ausercharacters.toLocaleString()} characters sent.`);
   }
+
+  if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!total")) {
+    var amessages = db.get(message.author.id).amessages;
+    var acharacters = db.get(message.author.id).acharacters;
+    message.reply(`T10 have ${amessages.toLocaleString()} messages and ${acharacters.toLocaleString()} characters sent in total.`);
+  }
+  
 });
 
 client.login(config.token);
