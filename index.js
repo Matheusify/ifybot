@@ -89,6 +89,8 @@ client.on("messageCreate", (message) => {
     db.math("totalcharacters", "+", yablength);
   }
 
+  if (message.channel.id === config.groupI3d) {
+
     db.ensure(message.author.id, {
       amessages: 0,
       acharacters: 0,
@@ -114,7 +116,7 @@ client.on("messageCreate", (message) => {
     }
 
     db.math("1totalcharacters", "+", ayablength);
-  }
+  };
 
   if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!stats")) {
     var subcount;
