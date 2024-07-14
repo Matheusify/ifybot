@@ -280,9 +280,9 @@ client.on("messageCreate", (message) => {
   }
 
   if (message.channelId === config.groupId && message.content.toLocaleLowerCase().startsWith("ify!total")) {
-    var messages = db.get(message.author.id).messages;
-    var characters = db.get(message.author.id).characters;
-    message.reply(`I10 have ${messages.toLocaleString()} messages and ${characters.toLocaleString()} characters sent in total.`);
+    var messages = db.get("totalmessages");
+    var characters = db.get("totalcharacters");
+    message.reply(`I10 have ${messages.toLocaleString('en-US')} messages and ${characters.toLocaleString()} characters sent in total.`);
   }
 
   if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
