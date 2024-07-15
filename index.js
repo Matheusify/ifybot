@@ -90,9 +90,7 @@ client.on("messageCreate", (message) => {
     }
 
     db.math("totalcharacters", "+", yablength);
-  }
-
-  if (message.channel.id === config.groupI3d) {
+  } else if (message.channel.id === config.groupI3d) {
 
     db.ensure(message.author.id, {
       amessages: 0,
@@ -120,8 +118,8 @@ client.on("messageCreate", (message) => {
 
     db.math("1totalcharacters", "+", ayablength);
   };
-
-  if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!stats")) {
+if (message.channel.id === config.groupId) {
+  if (message.content.toLowerCase().startsWith("ify!stats")) {
     var subcount;
     var cid;
     var channelname;
@@ -256,9 +254,7 @@ client.on("messageCreate", (message) => {
               });
           });
       });
-  }
-
-  if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!ping")) {
+  } else if (message.content.toLowerCase().startsWith("ify!ping")) {
     const now = Date.now();
     const userCooldown = cooldowns.get(message.author.id) || 0;
 
@@ -269,35 +265,30 @@ client.on("messageCreate", (message) => {
     message.reply(`My ping is ${Math.abs(client.ws.ping)}ms`);
 
     cooldowns.set(message.author.id, now + COOLDOWN_SECONDS * 1000);
-  }
-
-  if (message.channelId === config.groupId && message.content.toLowerCase().startsWith("ify!info")) {
+  } else if (message.content.toLowerCase().startsWith("ify!info")) {
     var userxp = db.get(message.author.id).xp;
     var userlevel = db.get(message.author.id).level;
     var usermessages = db.get(message.author.id).messages;
     var usercharacters = db.get(message.author.id).characters;
     message.reply(`You have ${userxp.toLocaleString()} XP and are on level ${userlevel.toLocaleString()}! You also have ${usermessages.toLocaleString()} messages and ${usercharacters.toLocaleString()} characters sent.`);
-  }
-
-  if (message.channelId === config.groupId && message.content.toLocaleLowerCase().startsWith("ify!total")) {
+  } else if (message.content.toLocaleLowerCase().startsWith("ify!total")) {
     var messages = db.get("totalmessages");
     var characters = db.get("totalcharacters");
     message.reply(`I10 have ${messages.toLocaleString('en-US')} messages and ${characters.toLocaleString('en-US')} characters sent in total.`);
   }
-
-  if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!info")) {
+} else if (message.channelId === config.groupI3d) {
+  if (message.content.toLocaleLowerCase().startsWith("ify!info")) {
     var auserxp = db.get(message.author.id).axp;
     var auserlevel = db.get(message.author.id).alevel;
     var ausermessages = db.get(message.author.id).amessages;
     var ausercharacters = db.get(message.author.id).acharacters;
     message.reply(`You have ${auserxp.toLocaleString()} XP and are on level ${auserlevel.toLocaleString()}! You also have ${ausermessages.toLocaleString()} messages and ${ausercharacters.toLocaleString()} characters sent.`);
-  }
-
-  if (message.channelId === config.groupI3d && message.content.toLocaleLowerCase().startsWith("ify!total")) {
+  } else if (message.content.toLocaleLowerCase().startsWith("ify!total")) {
     var amessages = db.get(message.author.id).amessages;
     var acharacters = db.get(message.author.id).acharacters;
     message.reply(`T10 have ${amessages.toLocaleString()} messages and ${acharacters.toLocaleString()} characters sent in total.`);
   }
+}
   
 });
 
