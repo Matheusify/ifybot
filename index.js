@@ -31,7 +31,7 @@ client.on("ready", () => {
 
 client.on("messageCreate", (message) => {
   function numberWithCommas(x) {
-    return x.toLocaleString();
+    return x.toLocaleString("en-US");
   }
 
   function abbreviate(count, withAbbr = true, decimals = 2) {
